@@ -8,3 +8,12 @@ id,name,status,val_bpb,artifact_bytes,duration,steps0,20260402_054420_swiglu,swi
 7,20260402_061040_int8_all,int8_all,B,crashed,5.55949722,null,11616692,620,0,463
 8,20260402_062133_int5_all,int5_all,B,crashed,6.88973156,null,3813749,622,0,464
 9,20260402_063216_int6_mlp_int8_attn,int6_mlp_int8_attn,B,crashed,7.71386807,null,7754918,611,0,462
+10,20260402_064246_int8_mlp_int6_attn,int8_mlp_int6_attn,B,crashed,5.18880304,null,9517181,614,0,464
+11,20260402_065413_blockC_baseline_no_pruning,blockC_baseline_no_pruning,C,crashed,5.17736295,null,9528248,609,0,465
+12,20260402_070452_prune_3pct,prune_3pct,C,crashed,5.18835408,null,9512913,609,0,464
+12,20260402_071500_prune_5pct,prune_5pct,C,crashed,5.16905331,null,9530174,609,0,466
+13,20260402_072508_prune_10pct,prune_10pct,C,crashed,5.19920030,null,9510163,611,0,464
+15,20260402_073633_clip_3_percentiles,clip_3_percentiles,D,crashed,5.17295667,null,9520483,610,0,465
+16,20260402_074653_clip_7_percentiles,clip_7_percentiles,D,crashed,5.20880909,null,9508484,609,0,464
+17,20260402_075714_clip_10_percentiles,clip_10_percentiles,D,crashed,5.17252588,null,9518229,611,0,465
+18,20260402_080826_block_E_final_combo,block_E_final_combo,E,crashed,5.18289513,null,9523858,639,0,466

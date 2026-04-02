@@ -1,0 +1,36 @@
+{
+  "id": "20260402_073633_clip_3_percentiles",
+  "experiment_number": 15,
+  "name": "clip_3_percentiles",
+  "block": "D",
+  "timestamp": "2026-04-02T07:46:43+00:00",
+  "mode": "full",
+  "status": "crashed",
+  "duration_seconds": 610,
+  "cost_usd": 0,
+  "seed": 1337,
+  "code_hash": "7f741d6b13de03e9f84da1415ded00b5",
+  "previous_best_bpb": A,
+  "metrics": {
+    "val_bpb": 5.17295667,
+    "val_loss": 8.73432065,
+    "final_train_loss": 2.7558,
+    "artifact_bytes": 9520483,
+    "total_params": 26993756,
+    "total_steps": 465,
+    "step_avg_ms": 645.77,
+    "delta_vs_best": null
+  },
+  "config": {
+    "model_dim": null,
+    "num_layers": null,
+    "seq_len": 2048,
+    "matrix_lr": 0.025,
+    "weight_decay": null,
+    "batch_tokens": 786432
+  },
+  "loss_curve": "",
+  "diff_file": "experiments/diff_20260402_073633_clip_3_percentiles.patch",
+  "diff_summary": "diff --git a/train_gpt.py b/train_gpt.py\nindex 8a3d7ff..1fb8897 100644\n--- a/train_gpt.py\n+++ b/train_gpt.py\n@@ -886,7 +886,7 @@ def quantize_int6_per_row(t: Tensor, clip_range: int = 31) -> tuple[Tensor, Tens\n     t32 = t.float()\n     if t32.ndim == 2:\n         best_q, best_s, best_err = None, None, float('inf')\n-        for pct in [0.9990, 0.9995, 0.9999, 0.99999, 1.0]:\n+        for pct in [0.9995, 0.99999, 1.0]:\n             if pct < 1.0:\n                 row_clip = torch.quantile(t32.abs(), pct, dim=1)\n             else:\n",
+  "log_file": "logs/exp_20260402_073633_clip_3_percentiles.log"
+}

@@ -1,0 +1,36 @@
+{
+  "id": "20260402_080826_block_E_final_combo",
+  "experiment_number": 18,
+  "name": "block_E_final_combo",
+  "block": "E",
+  "timestamp": "2026-04-02T08:19:05+00:00",
+  "mode": "full",
+  "status": "crashed",
+  "duration_seconds": 639,
+  "cost_usd": 0,
+  "seed": 1337,
+  "code_hash": "9465302c40174be08ee1e8f77889d8d1",
+  "previous_best_bpb": A,
+  "metrics": {
+    "val_bpb": 5.18289513,
+    "val_loss": 8.75110132,
+    "final_train_loss": 2.7558,
+    "artifact_bytes": 9523858,
+    "total_params": 26993756,
+    "total_steps": 466,
+    "step_avg_ms": 644.89,
+    "delta_vs_best": null
+  },
+  "config": {
+    "model_dim": null,
+    "num_layers": null,
+    "seq_len": 2048,
+    "matrix_lr": 0.025,
+    "weight_decay": null,
+    "batch_tokens": 786432
+  },
+  "loss_curve": "",
+  "diff_file": "experiments/diff_20260402_080826_block_E_final_combo.patch",
+  "diff_summary": "\n",
+  "log_file": "logs/exp_20260402_080826_block_E_final_combo.log"
+}

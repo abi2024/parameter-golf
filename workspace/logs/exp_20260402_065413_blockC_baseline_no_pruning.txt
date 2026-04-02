@@ -1311,14 +1311,6 @@ def main() -> None:
         log0(f"Serialized model: {model_bytes} bytes")
         log0(f"Code size: {code_bytes} bytes")
     sd_cpu = {k: v.detach().cpu() for k, v in export_sd.items()}
-    prune_pct = float(os.environ.get("PRUNE_PCT", 0.05))
-    if prune_pct > 0:
-        for name, t in sd_cpu.items():
-            if t.is_floating_point() and t.ndim >= 2 and t.numel() > 65536:
-                threshold = torch.quantile(t.abs().float().flatten(), prune_pct)
-                mask = t.abs() >= threshold
-                sd_cpu[name] = t * mask
-        log0(f"magnitude_pruning: {prune_pct*100:.1f}% applied")
     quant_result, quant_meta = mixed_quantize_int6(sd_cpu, {"attn"})
     quant_buf = io.BytesIO()
     torch.save({"w": quant_result, "m": quant_meta}, quant_buf)
@@ -1408,3 +1400,94 @@ def main() -> None:
         dist.destroy_process_group()
 if __name__ == "__main__":
     main()
+
+====================================================================================================
+Running Python 3.12.3 (main, Nov  6 2025, 13:44:16) [GCC 13.3.0]
+Running PyTorch 2.9.1+cu128
+Thu Apr  2 06:54:18 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.133.20             Driver Version: 570.133.20     CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA H100 80GB HBM3          On  |   00000000:9D:00.0 Off |                    0 |
+| N/A   27C    P0             86W /  700W |    1183MiB /  81559MiB |     11%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A          158446      C   /usr/local/bin/python                  1174MiB |
++-----------------------------------------------------------------------------------------+
+
+====================================================================================================
+val_bpb:enabled tokenizer_kind=sentencepiece tokenizer_path=./data/tokenizers/fineweb_1024_bpe.model
+train_loader:dataset:fineweb10B_sp1024 train_shards:10
+val_loader:shards pattern=./data/datasets/fineweb10B_sp1024/fineweb_val_*.bin tokens:62021632
+model_params:26993756
+mtp_num_heads:0 mtp_loss_weight:0.2 mtp_params:0
+XSA:last_4 active_layers:[7, 8, 9, 10]
+world_size:1 grad_accum_steps:8
+sdp_backends:cudnn=False flash=True mem_efficient=False math=False
+attention_mode:gqa num_heads:8 num_kv_heads:4
+tie_embeddings:True embed_lr:0.035 head_lr:0.0 matrix_lr:0.025 scalar_lr:0.025
+train_batch_tokens:786432 train_seq_len:2048 iterations:20000 warmup_steps:20 max_wallclock_seconds:300.000
+seed:1337
+warmup_step:1/20
+warmup_step:2/20
+warmup_step:3/20
+warmup_step:4/20
+warmup_step:5/20
+warmup_step:6/20
+warmup_step:7/20
+warmup_step:8/20
+warmup_step:9/20
+warmup_step:10/20
+warmup_step:11/20
+warmup_step:12/20
+warmup_step:13/20
+warmup_step:14/20
+warmup_step:15/20
+warmup_step:16/20
+warmup_step:17/20
+warmup_step:18/20
+warmup_step:19/20
+warmup_step:20/20
+step:1/20000 train_loss:6.9282 train_time:688ms step_avg:687.55ms
+late_qat:enabled step:1 scale:0.1234
+step:2/20000 train_loss:8.5776 train_time:1332ms step_avg:666.23ms
+step:3/20000 train_loss:8.4285 train_time:1973ms step_avg:657.83ms
+step:4/20000 train_loss:8.0835 train_time:2615ms step_avg:653.84ms
+step:5/20000 train_loss:7.6793 train_time:3256ms step_avg:651.22ms
+step:6/20000 train_loss:7.3491 train_time:3899ms step_avg:649.77ms
+step:7/20000 train_loss:7.0084 train_time:4539ms step_avg:648.41ms
+step:8/20000 train_loss:6.7280 train_time:5182ms step_avg:647.77ms
+step:9/20000 train_loss:6.4717 train_time:5828ms step_avg:647.54ms
+step:10/20000 train_loss:6.2737 train_time:6468ms step_avg:646.84ms
+swa:start step:50
+step:50/20000 train_loss:5.1906 train_time:32073ms step_avg:641.46ms
+step:100/20000 train_loss:3.9188 train_time:64552ms step_avg:645.52ms
+step:150/20000 train_loss:3.4969 train_time:96836ms step_avg:645.57ms
+step:200/20000 train_loss:3.2083 train_time:129147ms step_avg:645.73ms
+step:250/20000 train_loss:3.1623 train_time:161400ms step_avg:645.60ms
+step:300/20000 train_loss:2.9833 train_time:193609ms step_avg:645.36ms
+step:350/20000 train_loss:2.9947 train_time:225906ms step_avg:645.44ms
+step:400/20000 train_loss:2.9295 train_time:258221ms step_avg:645.55ms
+step:450/20000 train_loss:2.7555 train_time:290499ms step_avg:645.55ms
+step:465/20000 val_loss:2.8649 val_bpb:1.6967 train_time:300210ms step_avg:645.61ms
+stopping_early: wallclock_cap train_time:300210ms step:465/20000
+peak memory allocated: 20857 MiB reserved: 20870 MiB
+ema:applying EMA weights
+DIAGNOSTIC post_ema val_loss:9.2928 val_bpb:5.5037 eval_time:15406ms
+Serialized model: 106178569 bytes
+Code size: 67618 bytes
+Serialized model int6+zlib: 9460630 bytes
+Total submission size int6+zlib: 9528248 bytes
+Total submission size int8+zlib: 9528248 bytes
+final_int6_roundtrip val_loss:8.7418 val_bpb:5.1774 eval_time:19268ms
+final_int6_roundtrip_exact val_loss:8.74176048 val_bpb:5.17736295

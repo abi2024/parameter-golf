@@ -1,0 +1,36 @@
+{
+  "id": "20260402_072508_prune_10pct",
+  "experiment_number": 13,
+  "name": "prune_10pct",
+  "block": "C",
+  "timestamp": "2026-04-02T07:35:19+00:00",
+  "mode": "full",
+  "status": "crashed",
+  "duration_seconds": 611,
+  "cost_usd": 0,
+  "seed": 1337,
+  "code_hash": "4c01856e16efbd0d4b98c45e199770d9",
+  "previous_best_bpb": A,
+  "metrics": {
+    "val_bpb": 5.19920030,
+    "val_loss": 8.77863192,
+    "final_train_loss": 2.7575,
+    "artifact_bytes": 9510163,
+    "total_params": 26993756,
+    "total_steps": 464,
+    "step_avg_ms": 646.75,
+    "delta_vs_best": null
+  },
+  "config": {
+    "model_dim": null,
+    "num_layers": null,
+    "seq_len": 2048,
+    "matrix_lr": 0.025,
+    "weight_decay": null,
+    "batch_tokens": 786432
+  },
+  "loss_curve": "",
+  "diff_file": "experiments/diff_20260402_072508_prune_10pct.patch",
+  "diff_summary": "diff --git a/train_gpt.py b/train_gpt.py\nindex 0d8116b..60b744c 100644\n--- a/train_gpt.py\n+++ b/train_gpt.py\n@@ -1311,6 +1311,14 @@ def main() -> None:\n         log0(f\"Serialized model: {model_bytes} bytes\")\n         log0(f\"Code size: {code_bytes} bytes\")\n     sd_cpu = {k: v.detach().cpu() for k, v in export_sd.items()}\n+    prune_pct = float(os.environ.get(\"PRUNE_PCT\", 0.03))\n+    if prune_pct > 0:\n+        for name, t in sd_cpu.items():\n+            if t.is_floating_point() and t.ndim >= 2 and t.numel() > 65536:\n+                threshold = torch.quantile(t.abs().float().flatten(), prune_pct)\n+                mask = t.abs() >= threshold\n+                sd_cpu[name] = t * mask\n+        log0(f\"magnitude_pruning: {prune_pct*100:.1f}% applied\")\n     quant_result, quant_meta = mixed_quantize_int6(sd_cpu, {\"attn\"})\n     quant_buf = io.BytesIO()\n     torch.save({\"w\": quant_result, \"m\": quant_meta}, quant_buf)\n",
+  "log_file": "logs/exp_20260402_072508_prune_10pct.log"
+}

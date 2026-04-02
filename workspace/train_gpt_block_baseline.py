@@ -1311,7 +1311,15 @@ def main() -> None:
         log0(f"Serialized model: {model_bytes} bytes")
         log0(f"Code size: {code_bytes} bytes")
     sd_cpu = {k: v.detach().cpu() for k, v in export_sd.items()}
-    quant_result, quant_meta = mixed_quantize_int6(sd_cpu, {"mlp", "attn"})
+    prune_pct = float(os.environ.get("PRUNE_PCT", 0.05))
+    if prune_pct > 0:
+        for name, t in sd_cpu.items():
+            if t.is_floating_point() and t.ndim >= 2 and t.numel() > 65536:
+                threshold = torch.quantile(t.abs().float().flatten(), prune_pct)
+                mask = t.abs() >= threshold
+                sd_cpu[name] = t * mask
+        log0(f"magnitude_pruning: {prune_pct*100:.1f}% applied")
+    quant_result, quant_meta = mixed_quantize_int6(sd_cpu, {"attn"})
     quant_buf = io.BytesIO()
     torch.save({"w": quant_result, "m": quant_meta}, quant_buf)
     quant_raw = quant_buf.getvalue()
