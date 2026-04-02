@@ -1,0 +1,13 @@
+diff --git a/train_gpt.py b/train_gpt.py
+index 3e54711..7134f6d 100644
+--- a/train_gpt.py
++++ b/train_gpt.py
+@@ -882,7 +882,7 @@ def _classify_param(name: str) -> str:
+     if ".attn." in name or (".proj." in name and ".mlp." not in name):
+         return "attn"
+     return "other"
+-def quantize_int6_per_row(t: Tensor, clip_range: int = 31) -> tuple[Tensor, Tensor]:
++def quantize_int6_per_row(t: Tensor, clip_range: int = 15) -> tuple[Tensor, Tensor]:
+     t32 = t.float()
+     if t32.ndim == 2:
+         best_q, best_s, best_err = None, None, float('inf')

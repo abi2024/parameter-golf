@@ -583,7 +583,7 @@ class MLP(nn.Module):
         self.proj = CastedLinear(hidden, dim, bias=False)
         self.proj._zero_init = True
     def forward(self, x: Tensor) -> Tensor:
-        x = F.leaky_relu(self.fc(x), negative_slope=0.5)
+        x = torch.relu(self.fc(x))
         return self.proj(x.square())
 class Block(nn.Module):
     def __init__(
@@ -1311,7 +1311,7 @@ def main() -> None:
         log0(f"Serialized model: {model_bytes} bytes")
         log0(f"Code size: {code_bytes} bytes")
     sd_cpu = {k: v.detach().cpu() for k, v in export_sd.items()}
-    quant_result, quant_meta = mixed_quantize_int6(sd_cpu, {"attn"})
+    quant_result, quant_meta = mixed_quantize_int6(sd_cpu, {"mlp", "attn"})
     quant_buf = io.BytesIO()
     torch.save({"w": quant_result, "m": quant_meta}, quant_buf)
     quant_raw = quant_buf.getvalue()
@@ -1400,3 +1400,94 @@ def main() -> None:
         dist.destroy_process_group()
 if __name__ == "__main__":
     main()
+
+====================================================================================================
+Running Python 3.12.3 (main, Nov  6 2025, 13:44:16) [GCC 13.3.0]
+Running PyTorch 2.9.1+cu128
+Thu Apr  2 04:27:50 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.133.20             Driver Version: 570.133.20     CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA H100 80GB HBM3          On  |   00000000:9D:00.0 Off |                    0 |
+| N/A   29C    P0             86W /  700W |    1183MiB /  81559MiB |      2%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A           21825      C   /usr/local/bin/python                  1174MiB |
++-----------------------------------------------------------------------------------------+
+
+====================================================================================================
+val_bpb:enabled tokenizer_kind=sentencepiece tokenizer_path=./data/tokenizers/fineweb_1024_bpe.model
+train_loader:dataset:fineweb10B_sp1024 train_shards:10
+val_loader:shards pattern=./data/datasets/fineweb10B_sp1024/fineweb_val_*.bin tokens:62021632
+model_params:26993756
+mtp_num_heads:0 mtp_loss_weight:0.2 mtp_params:0
+XSA:last_4 active_layers:[7, 8, 9, 10]
+world_size:1 grad_accum_steps:8
+sdp_backends:cudnn=False flash=True mem_efficient=False math=False
+attention_mode:gqa num_heads:8 num_kv_heads:4
+tie_embeddings:True embed_lr:0.035 head_lr:0.0 matrix_lr:0.025 scalar_lr:0.025
+train_batch_tokens:786432 train_seq_len:2048 iterations:20000 warmup_steps:20 max_wallclock_seconds:300.000
+seed:1337
+warmup_step:1/20
+warmup_step:2/20
+warmup_step:3/20
+warmup_step:4/20
+warmup_step:5/20
+warmup_step:6/20
+warmup_step:7/20
+warmup_step:8/20
+warmup_step:9/20
+warmup_step:10/20
+warmup_step:11/20
+warmup_step:12/20
+warmup_step:13/20
+warmup_step:14/20
+warmup_step:15/20
+warmup_step:16/20
+warmup_step:17/20
+warmup_step:18/20
+warmup_step:19/20
+warmup_step:20/20
+step:1/20000 train_loss:6.9282 train_time:702ms step_avg:701.71ms
+late_qat:enabled step:1 scale:0.1210
+step:2/20000 train_loss:8.5824 train_time:1348ms step_avg:674.15ms
+step:3/20000 train_loss:8.4331 train_time:1992ms step_avg:663.88ms
+step:4/20000 train_loss:8.0879 train_time:2632ms step_avg:657.99ms
+step:5/20000 train_loss:7.6831 train_time:3296ms step_avg:659.13ms
+step:6/20000 train_loss:7.3518 train_time:3942ms step_avg:657.06ms
+step:7/20000 train_loss:7.0125 train_time:4586ms step_avg:655.19ms
+step:8/20000 train_loss:6.7328 train_time:5227ms step_avg:653.39ms
+step:9/20000 train_loss:6.4761 train_time:5870ms step_avg:652.17ms
+step:10/20000 train_loss:6.2781 train_time:6514ms step_avg:651.41ms
+swa:start step:50
+step:50/20000 train_loss:5.1978 train_time:32089ms step_avg:641.78ms
+step:100/20000 train_loss:3.9310 train_time:64571ms step_avg:645.71ms
+step:150/20000 train_loss:3.5193 train_time:96857ms step_avg:645.72ms
+step:200/20000 train_loss:3.2267 train_time:129294ms step_avg:646.47ms
+step:250/20000 train_loss:3.1794 train_time:161633ms step_avg:646.53ms
+step:300/20000 train_loss:2.9995 train_time:193777ms step_avg:645.92ms
+step:350/20000 train_loss:3.0109 train_time:226126ms step_avg:646.08ms
+step:400/20000 train_loss:2.9461 train_time:258326ms step_avg:645.82ms
+step:450/20000 train_loss:2.7708 train_time:290609ms step_avg:645.80ms
+step:465/20000 val_loss:2.8804 val_bpb:1.7059 train_time:300361ms step_avg:645.94ms
+stopping_early: wallclock_cap train_time:300361ms step:465/20000
+peak memory allocated: 20857 MiB reserved: 20870 MiB
+ema:applying EMA weights
+DIAGNOSTIC post_ema val_loss:9.0888 val_bpb:5.3829 eval_time:15401ms
+Serialized model: 106178569 bytes
+Code size: 67603 bytes
+Serialized model int6+zlib: 5594115 bytes
+Total submission size int6+zlib: 5661718 bytes
+Total submission size int8+zlib: 5661718 bytes
+final_int6_roundtrip val_loss:11.5957 val_bpb:6.8676 eval_time:19647ms
+final_int6_roundtrip_exact val_loss:11.59568742 val_bpb:6.86761924

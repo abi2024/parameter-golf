@@ -1,1 +1,10 @@
-id,name,status,val_bpb,artifact_bytes,duration,steps
+id,name,status,val_bpb,artifact_bytes,duration,steps0,20260402_054420_swiglu,swiglu,A,crashed,NA,null,NA,42,0,NA
+0,20260402_051122_leaky_relu_0.5,leaky_relu_0.5,A,success,6.90893602,null,5659797,2081,0,459
+2,20260402_055806_blockB_baseline_int6_int6,blockB_baseline_int6_int6,B,crashed,NA,null,NA,29,0,NA
+1,20260402_054531_swiglu_2_3_hidden,swiglu_2_3_hidden,A,crashed,4.47896213,null,6641062,804,0,269
+0,20260402_052231_leaky_relu_0.3,leaky_relu_0.3,A,crashed,5.68511985,null,5524292,2184,0,332
+0,20260402_053314_leaky_relu_0.1,leaky_relu_0.1,A,crashed,4.58682176,null,5464564,1541,0,276
+6,20260402_055908_blockB_baseline_int6_int6,blockB_baseline_int6_int6,B,crashed,6.92533440,null,5662016,617,0,462
+7,20260402_061040_int8_all,int8_all,B,crashed,5.55949722,null,11616692,620,0,463
+8,20260402_062133_int5_all,int5_all,B,crashed,6.88973156,null,3813749,622,0,464
+9,20260402_063216_int6_mlp_int8_attn,int6_mlp_int8_attn,B,crashed,7.71386807,null,7754918,611,0,462

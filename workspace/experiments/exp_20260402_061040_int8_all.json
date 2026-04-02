@@ -1,0 +1,36 @@
+{
+  "id": "20260402_061040_int8_all",
+  "experiment_number": 7,
+  "name": "int8_all",
+  "block": "B",
+  "timestamp": "2026-04-02T06:21:00+00:00",
+  "mode": "full",
+  "status": "crashed",
+  "duration_seconds": 620,
+  "cost_usd": 0,
+  "seed": 1337,
+  "code_hash": "7972b40ab31ca40858a35ff4f979152f",
+  "previous_best_bpb": A,
+  "metrics": {
+    "val_bpb": 5.55949722,
+    "val_loss": 9.38697818,
+    "final_train_loss": 2.7602,
+    "artifact_bytes": 11616692,
+    "total_params": 26993756,
+    "total_steps": 463,
+    "step_avg_ms": 648.52,
+    "delta_vs_best": null
+  },
+  "config": {
+    "model_dim": null,
+    "num_layers": null,
+    "seq_len": 2048,
+    "matrix_lr": 0.025,
+    "weight_decay": null,
+    "batch_tokens": 786432
+  },
+  "loss_curve": "",
+  "diff_file": "experiments/diff_20260402_061040_int8_all.patch",
+  "diff_summary": "diff --git a/train_gpt.py b/train_gpt.py\nindex 3e54711..cd25a22 100644\n--- a/train_gpt.py\n+++ b/train_gpt.py\n@@ -1311,7 +1311,7 @@ def main() -> None:\n         log0(f\"Serialized model: {model_bytes} bytes\")\n         log0(f\"Code size: {code_bytes} bytes\")\n     sd_cpu = {k: v.detach().cpu() for k, v in export_sd.items()}\n-    quant_result, quant_meta = mixed_quantize_int6(sd_cpu, {\"mlp\", \"attn\"})\n+    quant_result, quant_meta = mixed_quantize_int6(sd_cpu, set())\n     quant_buf = io.BytesIO()\n     torch.save({\"w\": quant_result, \"m\": quant_meta}, quant_buf)\n     quant_raw = quant_buf.getvalue()\n",
+  "log_file": "logs/exp_20260402_061040_int8_all.log"
+}

@@ -1,0 +1,95 @@
+logs/exp_20260402_053314_leaky_relu_0.1.txt
+val_bpb:enabled tokenizer_kind=sentencepiece tokenizer_path=./data/tokenizers/fineweb_1024_bpe.model
+train_loader:dataset:fineweb10B_sp1024 train_shards:10
+val_loader:shards pattern=./data/datasets/fineweb10B_sp1024/fineweb_val_*.bin tokens:62021632
+model_params:26993756
+mtp_num_heads:0 mtp_loss_weight:0.2 mtp_params:0
+XSA:last_4 active_layers:[7, 8, 9, 10]
+world_size:1 grad_accum_steps:8
+sdp_backends:cudnn=False flash=True mem_efficient=False math=False
+attention_mode:gqa num_heads:8 num_kv_heads:4
+tie_embeddings:True embed_lr:0.035 head_lr:0.0 matrix_lr:0.025 scalar_lr:0.025
+train_batch_tokens:786432 train_seq_len:2048 iterations:20000 warmup_steps:20 max_wallclock_seconds:300.000
+seed:1337
+warmup_step:1/20
+warmup_step:2/20
+warmup_step:3/20
+warmup_step:4/20
+warmup_step:5/20
+warmup_step:6/20
+warmup_step:7/20
+warmup_step:8/20
+warmup_step:9/20
+warmup_step:10/20
+warmup_step:11/20
+warmup_step:12/20
+warmup_step:13/20
+warmup_step:14/20
+warmup_step:15/20
+warmup_step:16/20
+warmup_step:17/20
+warmup_step:18/20
+warmup_step:19/20
+warmup_step:20/20
+step:1/20000 train_loss:6.9282 train_time:1148ms step_avg:1147.97ms
+late_qat:enabled step:1 scale:0.0733
+step:2/20000 train_loss:8.5823 train_time:2219ms step_avg:1109.58ms
+step:3/20000 train_loss:8.4992 train_time:3299ms step_avg:1099.68ms
+step:4/20000 train_loss:8.2750 train_time:4381ms step_avg:1095.13ms
+step:5/20000 train_loss:7.9856 train_time:5463ms step_avg:1092.57ms
+step:6/20000 train_loss:7.7416 train_time:6546ms step_avg:1091.00ms
+step:7/20000 train_loss:7.4630 train_time:7628ms step_avg:1089.70ms
+step:8/20000 train_loss:7.2250 train_time:8711ms step_avg:1088.83ms
+step:9/20000 train_loss:6.9653 train_time:9793ms step_avg:1088.15ms
+step:10/20000 train_loss:6.7602 train_time:10878ms step_avg:1087.77ms
+swa:start step:50
+step:50/20000 train_loss:5.4483 train_time:54197ms step_avg:1083.95ms
+step:100/20000 train_loss:4.7475 train_time:108698ms step_avg:1086.98ms
+step:150/20000 train_loss:4.0583 train_time:163442ms step_avg:1089.61ms
+step:200/20000 train_loss:3.7671 train_time:217658ms step_avg:1088.29ms
+step:250/20000 train_loss:3.7592 train_time:271947ms step_avg:1087.79ms
+step:276/20000 val_loss:3.6840 val_bpb:2.1819 train_time:300859ms step_avg:1090.07ms
+stopping_early: wallclock_cap train_time:300859ms step:276/20000
+peak memory allocated: 20856 MiB reserved: 20958 MiB
+ema:applying EMA weights
+DIAGNOSTIC post_ema val_loss:7.1643 val_bpb:4.2431 eval_time:25852ms
+Serialized model: 106178569 bytes
+Code size: 67625 bytes
+Serialized model int6+zlib: 5396939 bytes
+Total submission size int6+zlib: 5464564 bytes
+Total submission size int8+zlib: 5464564 bytes
+final_int6_roundtrip val_loss:7.7447 val_bpb:4.5868 eval_time:56006ms
+final_int6_roundtrip_exact val_loss:7.74465641 val_bpb:4.58682176
+E0402 05:58:54.983000 60274 torch/distributed/elastic/multiprocessing/api.py:882] failed (exitcode: -9) local_rank: 0 (pid: 60343) of binary: /usr/local/bin/python
+Traceback (most recent call last):
+  File "/usr/local/bin/torchrun", line 7, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 357, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/distributed/run.py", line 936, in main
+    run(args)
+  File "/usr/local/lib/python3.12/dist-packages/torch/distributed/run.py", line 927, in run
+    elastic_launch(
+  File "/usr/local/lib/python3.12/dist-packages/torch/distributed/launcher/api.py", line 156, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/distributed/launcher/api.py", line 293, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+======================================================
+train_gpt.py FAILED
+------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-04-02_05:58:54
+  host      : 0513ba74e7b1
+  rank      : 0 (local_rank: 0)
+  exitcode  : -9 (pid: 60343)
+  error_file: <N/A>
+  traceback : Signal 9 (SIGKILL) received by PID 60343
+======================================================

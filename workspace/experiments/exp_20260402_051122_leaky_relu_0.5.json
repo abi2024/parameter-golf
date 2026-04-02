@@ -1,0 +1,36 @@
+{
+  "id": "20260402_051122_leaky_relu_0.5",
+  "experiment_number": 0,
+  "name": "leaky_relu_0.5",
+  "block": "A",
+  "timestamp": "2026-04-02T05:46:03+00:00",
+  "mode": "full",
+  "status": "success",
+  "duration_seconds": 2081,
+  "cost_usd": 0,
+  "seed": 1337,
+  "code_hash": "74057a6a6bbbe95e7baf0203fe50a170",
+  "previous_best_bpb": null,
+  "metrics": {
+    "val_bpb": 6.90893602,
+    "val_loss": 11.66541819,
+    "final_train_loss": 2.7669,
+    "artifact_bytes": 5659797,
+    "total_params": 26993756,
+    "total_steps": 459,
+    "step_avg_ms": 653.77,
+    "delta_vs_best": null
+  },
+  "config": {
+    "model_dim": null,
+    "num_layers": null,
+    "seq_len": 2048,
+    "matrix_lr": 0.025,
+    "weight_decay": null,
+    "batch_tokens": 786432
+  },
+  "loss_curve": "",
+  "diff_file": "experiments/diff_20260402_051122_leaky_relu_0.5.patch",
+  "diff_summary": "diff --git a/train_gpt.py b/train_gpt.py\nindex eb42a63..3e54711 100644\n--- a/train_gpt.py\n+++ b/train_gpt.py\n@@ -583,7 +583,7 @@ class MLP(nn.Module):\n         self.proj = CastedLinear(hidden, dim, bias=False)\n         self.proj._zero_init = True\n     def forward(self, x: Tensor) -> Tensor:\n-        x = torch.relu(self.fc(x))\n+        x = F.leaky_relu(self.fc(x), negative_slope=0.5)\n         return self.proj(x.square())\n class Block(nn.Module):\n     def __init__(\n",
+  "log_file": "logs/exp_20260402_051122_leaky_relu_0.5.log"
+}

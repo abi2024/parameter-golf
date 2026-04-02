@@ -1,0 +1,36 @@
+{
+  "id": "20260402_054531_swiglu_2_3_hidden",
+  "experiment_number": 1,
+  "name": "swiglu_2_3_hidden",
+  "block": "A",
+  "timestamp": "2026-04-02T05:58:55+00:00",
+  "mode": "full",
+  "status": "crashed",
+  "duration_seconds": 804,
+  "cost_usd": 0,
+  "seed": 1337,
+  "code_hash": "8c203dd54bb0e7c74ea4eabce1670a50",
+  "previous_best_bpb": null,
+  "metrics": {
+    "val_bpb": 4.47896213,
+    "val_loss": 7.56253993,
+    "final_train_loss": 3.8744,
+    "artifact_bytes": 6641062,
+    "total_params": 26993756,
+    "total_steps": 269,
+    "step_avg_ms": 1115.48,
+    "delta_vs_best": null
+  },
+  "config": {
+    "model_dim": null,
+    "num_layers": null,
+    "seq_len": 2048,
+    "matrix_lr": 0.025,
+    "weight_decay": null,
+    "batch_tokens": 786432
+  },
+  "loss_curve": "",
+  "diff_file": "experiments/diff_20260402_054531_swiglu_2_3_hidden.patch",
+  "diff_summary": "diff --git a/train_gpt.py b/train_gpt.py\nindex eb42a63..d038903 100644\n--- a/train_gpt.py\n+++ b/train_gpt.py\n@@ -578,13 +578,13 @@ class ValueEmbedding(nn.Module):\n class MLP(nn.Module):\n     def __init__(self, dim: int, mlp_mult: int):\n         super().__init__()\n-        hidden = int(mlp_mult * dim)\n-        self.fc = CastedLinear(dim, hidden, bias=False)\n+        hidden = int(mlp_mult * dim * 2 // 3)\n+        self.gate = CastedLinear(dim, hidden, bias=False)\n+        self.up = CastedLinear(dim, hidden, bias=False)\n         self.proj = CastedLinear(hidden, dim, bias=False)\n         self.proj._zero_init = True\n     def forward(self, x: Tensor) -> Tensor:\n-        x = torch.relu(self.fc(x))\n-        return self.proj(x.square())\n+        return self.proj(F.silu(self.gate(x)) * self.up(x))\n class Block(nn.Module):\n     def __init__(\n         self,\n",
+  "log_file": "logs/exp_20260402_054531_swiglu_2_3_hidden.log"
+}

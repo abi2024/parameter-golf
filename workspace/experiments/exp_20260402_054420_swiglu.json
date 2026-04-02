@@ -1,0 +1,36 @@
+{
+  "id": "20260402_054420_swiglu",
+  "experiment_number": 0,
+  "name": "swiglu",
+  "block": "A",
+  "timestamp": "2026-04-02T05:45:02+00:00",
+  "mode": "full",
+  "status": "crashed",
+  "duration_seconds": 42,
+  "cost_usd": 0,
+  "seed": 1337,
+  "code_hash": "b28d59ab1ddc50e434bb9b67bd79b2ab",
+  "previous_best_bpb": null,
+  "metrics": {
+    "val_bpb": null,
+    "val_loss": null,
+    "final_train_loss": null,
+    "artifact_bytes": null,
+    "total_params": 35644508,
+    "total_steps": null,
+    "step_avg_ms": null,
+    "delta_vs_best": null
+  },
+  "config": {
+    "model_dim": null,
+    "num_layers": null,
+    "seq_len": 2048,
+    "matrix_lr": 0.025,
+    "weight_decay": null,
+    "batch_tokens": 786432
+  },
+  "loss_curve": "",
+  "diff_file": "experiments/diff_20260402_054420_swiglu.patch",
+  "diff_summary": "diff --git a/train_gpt.py b/train_gpt.py\nindex eb42a63..bb4eb75 100644\n--- a/train_gpt.py\n+++ b/train_gpt.py\n@@ -579,12 +579,12 @@ class MLP(nn.Module):\n     def __init__(self, dim: int, mlp_mult: int):\n         super().__init__()\n         hidden = int(mlp_mult * dim)\n-        self.fc = CastedLinear(dim, hidden, bias=False)\n+        self.gate = CastedLinear(dim, hidden, bias=False)\n+        self.up = CastedLinear(dim, hidden, bias=False)\n         self.proj = CastedLinear(hidden, dim, bias=False)\n         self.proj._zero_init = True\n     def forward(self, x: Tensor) -> Tensor:\n-        x = torch.relu(self.fc(x))\n-        return self.proj(x.square())\n+        return self.proj(F.silu(self.gate(x)) * self.up(x))\n class Block(nn.Module):\n     def __init__(\n         self,\n",
+  "log_file": "logs/exp_20260402_054420_swiglu.log"
+}

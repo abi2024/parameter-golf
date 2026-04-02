@@ -1,0 +1,36 @@
+{
+  "id": "20260402_055806_blockB_baseline_int6_int6",
+  "experiment_number": 2,
+  "name": "blockB_baseline_int6_int6",
+  "block": "B",
+  "timestamp": "2026-04-02T05:58:36+00:00",
+  "mode": "full",
+  "status": "crashed",
+  "duration_seconds": 29,
+  "cost_usd": 0,
+  "seed": 1337,
+  "code_hash": "74057a6a6bbbe95e7baf0203fe50a170",
+  "previous_best_bpb": A,
+  "metrics": {
+    "val_bpb": null,
+    "val_loss": null,
+    "final_train_loss": null,
+    "artifact_bytes": null,
+    "total_params": 26993756,
+    "total_steps": null,
+    "step_avg_ms": null,
+    "delta_vs_best": null
+  },
+  "config": {
+    "model_dim": null,
+    "num_layers": null,
+    "seq_len": 2048,
+    "matrix_lr": 0.025,
+    "weight_decay": null,
+    "batch_tokens": 786432
+  },
+  "loss_curve": "",
+  "diff_file": "experiments/diff_20260402_055806_blockB_baseline_int6_int6.patch",
+  "diff_summary": "\n",
+  "log_file": "logs/exp_20260402_055806_blockB_baseline_int6_int6.log"
+}
