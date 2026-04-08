@@ -1,0 +1,13 @@
+{
+    "experiment": "leaky_ema_on",
+    "timestamp": "2026-04-08T07:25:52+00:00",
+    "duration_seconds": 1132,
+    "mid_train_bpb": "1.7153",
+    "post_ema_bpb": "5.5975",
+    "roundtrip_bpb": "5.32900297",
+    "artifact_bytes": "9423806",
+    "steps": "452",
+    "step_avg_ms": "664.90",
+    "final_train_loss": "2.9541",
+    "log_file": "logs/day2_leaky_ema_on_20260408_070700.log"
+}

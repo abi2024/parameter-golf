@@ -8,7 +8,7 @@
 
 set -e
 CMD=${1:?"Usage: bash day2_experiments.sh [setup|all]"}
-cd /workspace/parameter-golf/workspace
+cd /workspace/parameter-golf/parameter-golf/workspace
 
 pkill -f train_gpt.py 2>/dev/null || true
 sleep 2
