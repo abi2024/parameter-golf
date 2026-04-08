@@ -1,6 +1,6 @@
 # Parameter Golf: Ablation Study Results
 
-**Author:** [Abishek Satnur](https://github.com/abi2024) | **Blog:** [Day 0](https://substack.com) · [Day 1](https://substack.com) · [Day 2](https://substack.com)
+**Author:** [Abishek Satnur](https://github.com/abi2024) | **Blog:** [Day 0](https://abisheksatnur.substack.com/p/parameter-golf-day-0) · [Day 1](https://substack.com/@abisheksatnur/note/p-192969642?utm_source=notes-share-action&r=2dt2tv) · [Day 2](https://substack.com/@abisheksatnur/note/p-193612068?r=2dt2tv&utm_source=notes-share-action&utm_medium=web)
 **Hardware:** 1×H100 SXM 80GB on RunPod | **Base config:** [1.1233 merged record](https://github.com/openai/parameter-golf/blob/main/records/track_10min_16mb/2026-03-22_11L_EMA_GPTQ-lite_warmdown3500_QAT015_1.1233/README.md)
 
 > **Important:** All numbers below are from 1-GPU development runs (~450 steps in 5 minutes). Absolute BPB values are not comparable to the 8-GPU leaderboard (~3,700 steps in 10 minutes). Relative rankings between experiments are valid — all ran under identical conditions.
