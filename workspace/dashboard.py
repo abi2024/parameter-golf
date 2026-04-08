@@ -71,7 +71,8 @@ x.strokeStyle='#3fb950';x.lineWidth=2;x.beginPath();D.forEach((d,i)=>{{const y=s
 for(let i=0;i<=4;i++){{const v=mx-(i/4)*(mx-mn);x.fillStyle='#8b949e';x.font='10px system-ui';x.textAlign='right';x.fillText(v.toFixed(3),p.l-6,sy(v)+3)}}
 }}else{{x.fillStyle='#8b949e';x.font='14px system-ui';x.fillText('No experiments yet',W/2-60,H/2)}}
 </script></body></html>"""
-    with open("dashboard.html","w") as f: f.write(html)
+    with open("dashboard.html","w", encoding="utf-8") as f: f.write(html)
+
     print(f"Dashboard: dashboard.html ({len(exps)} experiments, best: {best})")
 
 if __name__=="__main__": main()
